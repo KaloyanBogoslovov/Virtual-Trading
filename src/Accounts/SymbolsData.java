@@ -1,4 +1,4 @@
-package Accounts;
+package accounts;
 
 public class SymbolsData {
 	public String symbol;

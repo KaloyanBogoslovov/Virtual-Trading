@@ -10,12 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
 
-
-import Accounts.LogIn;
-import Accounts.LoggedUser;
-import Accounts.SymbolsData;
 import DB.DBConnection;
 import about.About;
+import accounts.LogIn;
+import accounts.LoggedUser;
+import accounts.SymbolsData;
 import bottomTabs.BHistoryTab;
 import bottomTabs.BTradeTab;
 import bottomTabs.BalanceTab;
@@ -277,6 +276,7 @@ public class Main extends Application{
 		window.getIcons().add(new Image("blue.png"));
 		window.setScene(mainScene);
 		window.show();
+		DBConnection.createDB();
 		new LogIn();
 		updating.dataUpdate();
 		LogFile.initPathLocationAndCreateFile();

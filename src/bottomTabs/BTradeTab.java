@@ -7,8 +7,9 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import Accounts.LoggedUser;
+
 import DB.DBConnection;
+import accounts.LoggedUser;
 import dataForTable.TradeData;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;

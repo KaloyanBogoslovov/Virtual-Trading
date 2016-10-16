@@ -11,8 +11,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 
-import Accounts.LoggedUser;
 import DB.DBConnection;
+import accounts.LoggedUser;
 import bottomTabs.ChangeTables;
 import logFile.LogFile;
 import yahoo.UpdateData;
@@ -129,6 +129,7 @@ public class DataUpdating {
 			equity =(balanceData.getBigDecimal(1).add(liveProfit)).setScale(2, BigDecimal.ROUND_HALF_EVEN);
 			equity=equity.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 			db.insertDB("update users set totalprofit="+liveProfit+", equity="+equity+ "where username='"+loggedUser.getLoggedUser()+"'");
+			liveProfit = new BigDecimal(0);
 	  }
 
 	  private void repaintTables(){
