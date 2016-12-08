@@ -2,152 +2,153 @@ package yahoo;
 
 public class DetailsData {
 
-	private String name;
-	private String symbol;
-	private String bid;
-	private String ask;
-	private String price;
-	private String open;
-	private String dayLow;
-	private String dayHigh;
-	private String previousClose;
-	private String volume;
-	private String avgVolumeDaily;
-	private String bookValuePerShare;
-	private String revenue;
-	private String EBITDA;
-	public String getEBITDA() {
-		return EBITDA;
-	}
+  private String name;
+  private String symbol;
+  private String bid;
+  private String ask;
+  private String price;
+  private String open;
+  private String dayLow;
+  private String dayHigh;
+  private String previousClose;
+  private String volume;
+  private String avgVolumeDaily;
+  private String bookValuePerShare;
+  private String revenue;
+  private String EBITDA;
 
-	public void setEBITDA(String eBITDA) {
-		EBITDA = eBITDA;
-	}
+  public String getEBITDA() {
+    return EBITDA;
+  }
 
-	private String sharesOutstanding;
-	private String marketCap;
+  public void setEBITDA(String eBITDA) {
+    EBITDA = eBITDA;
+  }
 
-	public DetailsData(){}
+  private String sharesOutstanding;
+  private String marketCap;
 
-	public String getName() {
-		return name;
-	}
+  public DetailsData() {}
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public String getSymbol() {
-		return symbol;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public void setSymbol(String symbol) {
-		this.symbol = symbol;
-	}
+  public String getSymbol() {
+    return symbol;
+  }
 
-	public String getBid() {
-		return bid;
-	}
+  public void setSymbol(String symbol) {
+    this.symbol = symbol;
+  }
 
-	public void setBid(String bid) {
-		this.bid = bid;
-	}
+  public String getBid() {
+    return bid;
+  }
 
-	public String getAsk() {
-		return ask;
-	}
+  public void setBid(String bid) {
+    this.bid = bid;
+  }
 
-	public void setAsk(String ask) {
-		this.ask = ask;
-	}
+  public String getAsk() {
+    return ask;
+  }
 
-	public String getPrice() {
-		return price;
-	}
+  public void setAsk(String ask) {
+    this.ask = ask;
+  }
 
-	public void setPrice(String price) {
-		this.price = price;
-	}
+  public String getPrice() {
+    return price;
+  }
 
-	public String getOpen() {
-		return open;
-	}
+  public void setPrice(String price) {
+    this.price = price;
+  }
 
-	public void setOpen(String open) {
-		this.open = open;
-	}
+  public String getOpen() {
+    return open;
+  }
 
-	public String getDayLow() {
-		return dayLow;
-	}
+  public void setOpen(String open) {
+    this.open = open;
+  }
 
-	public void setDayLow(String dayLow) {
-		this.dayLow = dayLow;
-	}
+  public String getDayLow() {
+    return dayLow;
+  }
 
-	public String getDayHigh() {
-		return dayHigh;
-	}
+  public void setDayLow(String dayLow) {
+    this.dayLow = dayLow;
+  }
 
-	public void setDayHigh(String dayHigh) {
-		this.dayHigh = dayHigh;
-	}
+  public String getDayHigh() {
+    return dayHigh;
+  }
 
-	public String getPreviousClose() {
-		return previousClose;
-	}
+  public void setDayHigh(String dayHigh) {
+    this.dayHigh = dayHigh;
+  }
 
-	public void setPreviousClose(String previousClose) {
-		this.previousClose = previousClose;
-	}
+  public String getPreviousClose() {
+    return previousClose;
+  }
 
-	public String getVolume() {
-		return volume;
-	}
+  public void setPreviousClose(String previousClose) {
+    this.previousClose = previousClose;
+  }
 
-	public void setVolume(String volume) {
-		this.volume = volume;
-	}
+  public String getVolume() {
+    return volume;
+  }
 
-	public String getAvgVolumeDaily() {
-		return avgVolumeDaily;
-	}
+  public void setVolume(String volume) {
+    this.volume = volume;
+  }
 
-	public void setAvgVolumeDaily(String avgVolumeDaily) {
-		this.avgVolumeDaily = avgVolumeDaily;
-	}
+  public String getAvgVolumeDaily() {
+    return avgVolumeDaily;
+  }
 
-	public String getBookValuePerShare() {
-		return bookValuePerShare;
-	}
+  public void setAvgVolumeDaily(String avgVolumeDaily) {
+    this.avgVolumeDaily = avgVolumeDaily;
+  }
 
-	public void setBookValuePerShare(String bookValuePerShare) {
-		this.bookValuePerShare = bookValuePerShare;
-	}
+  public String getBookValuePerShare() {
+    return bookValuePerShare;
+  }
 
-	public String getRevenue() {
-		return revenue;
-	}
+  public void setBookValuePerShare(String bookValuePerShare) {
+    this.bookValuePerShare = bookValuePerShare;
+  }
 
-	public void setRevenue(String revenue) {
-		this.revenue = revenue;
-	}
+  public String getRevenue() {
+    return revenue;
+  }
 
-	public String getSharesOutstanding() {
-		return sharesOutstanding;
-	}
+  public void setRevenue(String revenue) {
+    this.revenue = revenue;
+  }
 
-	public void setSharesOutstanding(String sharesOutstanding) {
-		this.sharesOutstanding = sharesOutstanding;
-	}
+  public String getSharesOutstanding() {
+    return sharesOutstanding;
+  }
 
-	public String getMarketCap() {
-		return marketCap;
-	}
+  public void setSharesOutstanding(String sharesOutstanding) {
+    this.sharesOutstanding = sharesOutstanding;
+  }
 
-	public void setMarketCap(String marketCap) {
-		this.marketCap = marketCap;
-	}
+  public String getMarketCap() {
+    return marketCap;
+  }
+
+  public void setMarketCap(String marketCap) {
+    this.marketCap = marketCap;
+  }
 
 
 

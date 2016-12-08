@@ -10,21 +10,25 @@ import javafx.stage.Stage;
 
 public class About {
 
-	public About(){
-		Stage window = new Stage();
-		window.setTitle("About");
-		VBox vbox = new VBox(10);
-		Label author = new Label("Creator: Kaloyan Evgeniev Bogoslovov");
-		Label title = new Label("Virtual Trading 1.0");
-		Image image = new Image("blue.png");
-		ImageView imageView = new ImageView();
-		imageView.setImage(image);
-		vbox.getChildren().addAll(title,author,imageView);
-		vbox.setAlignment(Pos.CENTER);
-		window.getIcons().add(new Image("blue.png"));
-		Scene scene = new Scene(vbox,220,220);
-		window.setScene(scene);
-		window.show();
-	}
+  public About() {
+    Stage window = new Stage();
+    window.setTitle("About");
+
+    Label author = new Label("Creator: Kaloyan Evgeniev Bogoslovov");
+    Label title = new Label("Virtual Trading 1.0");
+    Image image = new Image("blue.png");
+
+    ImageView imageView = new ImageView();
+    imageView.setImage(image);
+
+    VBox vbox = new VBox(10);
+    vbox.getChildren().addAll(title, author, imageView);
+    vbox.setAlignment(Pos.CENTER);
+
+    window.getIcons().add(new Image("blue.png"));
+    Scene scene = new Scene(vbox, 220, 220);
+    window.setScene(scene);
+    window.show();
+  }
 
 }
