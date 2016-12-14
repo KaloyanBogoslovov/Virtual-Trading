@@ -1,4 +1,4 @@
-package registration;
+package accounts;
 
 public class Symbols {
   public String symbol;

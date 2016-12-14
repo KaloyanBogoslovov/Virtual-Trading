@@ -2,6 +2,8 @@ package tabs.left;
 
 import java.io.IOException;
 
+import accounts.LogIn;
+import accounts.Symbols;
 import charts.MainChart;
 import charts.NewChart;
 import data.tables.SymbolsData;
@@ -13,8 +15,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import main.Main;
 import newtradingposition.NewPosition;
-import registration.LogIn;
-import registration.Symbols;
 import tabs.Tabs;
 import yahoo.DetailsData;
 import yahoo.DetailsDataFromYahoo;

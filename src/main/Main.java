@@ -1,6 +1,7 @@
 package main;
 
 import about.About;
+import accounts.LogIn;
 import charts.MainChart;
 import charts.NewChart;
 import data.updating.DataUpdating;
@@ -32,7 +33,6 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import logfile.LogFile;
 import newtradingposition.NewPosition;
-import registration.LogIn;
 import tabs.Tabs;
 import tabs.TabsFactory;
 
