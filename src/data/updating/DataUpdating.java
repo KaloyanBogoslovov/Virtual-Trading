@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 
-import database.DBConnection;
+import database.Database;
 import logfile.LogFile;
 import yahoo.UpdateData;
 import yahoo.UpdateDataFromYahoo;
@@ -21,9 +21,7 @@ import yahoo.YahooFinance;
 public class DataUpdating {
   private BigDecimal zero = new BigDecimal(0);
   private int i = 0;
-
   private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-  private DBConnection db = new DBConnection();
   private BigDecimal liveProfit = new BigDecimal(0);
 
 
@@ -31,9 +29,8 @@ public class DataUpdating {
     final Runnable beeper = new Runnable() {
       public void run() {
         if (userLogedIn()) {
-          System.out.println("if");
           try {
-            db.connectingToDB();
+            Database.connectingToDB();
             String[] companies = getCompanies();
             System.out.println("companies");
             if (companies.length != 0) {
@@ -68,7 +65,7 @@ public class DataUpdating {
   }
 
   private String[] getCompanies() throws SQLException {
-    ResultSet companySymbols = db.SelectDB("select symbol  from trades where username='"
+    ResultSet companySymbols = Database.SelectDB("select symbol  from trades where username='"
         + LoggedUser.getLoggedUser() + "' and tradestate='active'");
     ArrayList<String> rowValues = new ArrayList<String>();
     while (companySymbols.next()) {
@@ -86,7 +83,7 @@ public class DataUpdating {
     calculateAndUpdateProfits(companies, stocks);
     updateUsersTotalProfitAndEquity();
     repaintTables();
-    db.closeConnectionToDB();
+    Database.closeConnectionToDB();
   }
 
   private void calculateAndUpdateProfits(String[] companies, List<UpdateData> stocks)
@@ -97,7 +94,7 @@ public class DataUpdating {
     BigDecimal volume = new BigDecimal(0);
     int orderNumber = 0;
 
-    ResultSet companyData = db.SelectDB(
+    ResultSet companyData = Database.SelectDB(
         "select symbol,tradetype,purchaseprice,volume,ordernumber  from trades where username='"
             + LoggedUser.getLoggedUser() + "' and tradestate='active'");
     // calculate profits
@@ -122,7 +119,7 @@ public class DataUpdating {
       currentPrice = currentPrice.setScale(2, BigDecimal.ROUND_HALF_EVEN);
       profit = profit.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 
-      db.insertDB("update trades set profit=" + profit + ", currentPrice=" + currentPrice
+      Database.insertDB("update trades set profit=" + profit + ", currentPrice=" + currentPrice
           + "where username='" + LoggedUser.getLoggedUser() + "'" + "and ordernumber="
           + orderNumber);
       liveProfit = (liveProfit.add(profit));
@@ -131,13 +128,13 @@ public class DataUpdating {
 
   private void updateUsersTotalProfitAndEquity() throws SQLException {
     BigDecimal equity = new BigDecimal(0);
-    ResultSet balanceData = db
+    ResultSet balanceData = Database
         .SelectDB("select balance from users where username='" + LoggedUser.getLoggedUser() + "'");
     balanceData.absolute(1);
     liveProfit = liveProfit.setScale(2, BigDecimal.ROUND_HALF_EVEN);
     equity = (balanceData.getBigDecimal(1).add(liveProfit)).setScale(2, BigDecimal.ROUND_HALF_EVEN);
     equity = equity.setScale(2, BigDecimal.ROUND_HALF_EVEN);
-    db.insertDB("update users set totalprofit=" + liveProfit + ", equity=" + equity
+    Database.insertDB("update users set totalprofit=" + liveProfit + ", equity=" + equity
         + "where username='" + LoggedUser.getLoggedUser() + "'");
     liveProfit = new BigDecimal(0);
   }

@@ -7,11 +7,6 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-
 import data.updating.DataUpdating;
 import logfile.LogFile;
 
@@ -50,12 +45,14 @@ public class UpdateDataFromYahoo extends YahooFinance {
       String line = br.readLine();
       addChartDataObjectsToList(line, br);
     } catch (final java.net.SocketTimeoutException e) {
-      System.out.println(
-          "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
-
+      System.out.println("SocketTimeoutException");
+      LogFile.saveDataToLogFile("Exception: SocketTimeoutException");
       new DataUpdating().dataUpdate();
-    } catch (IOException e) {
+    } catch (java.io.IOException e) {
+      LogFile.saveDataToLogFile("Exception: IOException");
+      System.out.println("Exception: IOException");
       e.printStackTrace();
+      new DataUpdating().dataUpdate();
     }
   }
 

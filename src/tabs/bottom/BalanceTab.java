@@ -5,17 +5,17 @@ import java.sql.SQLException;
 
 import data.tables.BalanceData;
 import data.updating.LoggedUser;
-import database.DBConnection;
+import database.Database;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import tabs.Tabs;
 
-public class BalanceTab implements Tabs{
+public class BalanceTab implements Tabs {
   private TableView<BalanceData> balanceTable;
-  private TableColumn<BalanceData, String> balanceColumn, equityColumn, leverageColumn, marginColumn,
-      freeMarginColumn, totalProfitColumn;
+  private TableColumn<BalanceData, String> balanceColumn, equityColumn, leverageColumn,
+      marginColumn, freeMarginColumn, totalProfitColumn;
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   public BalanceTab() {
@@ -39,7 +39,7 @@ public class BalanceTab implements Tabs{
     setColumnSizes();
   }
 
-  public void setColumnSizes() {
+  private void setColumnSizes() {
     balanceColumn.prefWidthProperty().bind(balanceTable.widthProperty().multiply(0.1666));
     equityColumn.prefWidthProperty().bind(balanceTable.widthProperty().multiply(0.1666));
     leverageColumn.prefWidthProperty().bind(balanceTable.widthProperty().multiply(0.1666));
@@ -48,37 +48,35 @@ public class BalanceTab implements Tabs{
     totalProfitColumn.prefWidthProperty().bind(balanceTable.widthProperty().multiply(0.1666));
   }
 
-
-
   public TableView getTable() {
     return balanceTable;
   }
 
 
   public void initTableContent() {
-    try{
-    DBConnection db = new DBConnection();
-    db.connectingToDB();
-    ResultSet result = db.SelectDB(
-        "select balance, equity,leverage,margin,freemargin,totalprofit from users where username='"
-            + LoggedUser.getLoggedUser() + "'");
-    ObservableList<BalanceData> allRows;
-    allRows = balanceTable.getItems();
-    allRows.clear();
+    try {
+      Database.connectingToDB();
+      ResultSet result = Database.SelectDB(
+          "select balance, equity,leverage,margin,freemargin,totalprofit from users where username='"
+              + LoggedUser.getLoggedUser() + "'");
+      ObservableList<BalanceData> allRows;
+      allRows = balanceTable.getItems();
+      allRows.clear();
 
-    while (result.next()) {
-      BalanceData balanceData = new BalanceData();
-      balanceData.setBalance(result.getString(1));
-      balanceData.setEquity(result.getString(2));
-      balanceData.setLeverage(result.getString(3));
-      balanceData.setMargin(result.getString(4));
-      balanceData.setFreeMargin(result.getString(5));
-      balanceData.setProfit(result.getString(6));
-      balanceTable.getItems().add(balanceData);
+      while (result.next()) {
+        BalanceData balanceData = new BalanceData();
+        balanceData.setBalance(result.getString(1));
+        balanceData.setEquity(result.getString(2));
+        balanceData.setLeverage(result.getString(3));
+        balanceData.setMargin(result.getString(4));
+        balanceData.setFreeMargin(result.getString(5));
+        balanceData.setProfit(result.getString(6));
+        balanceTable.getItems().add(balanceData);
+      }
+      Database.closeConnectionToDB();
+
+    } catch (SQLException | ClassNotFoundException e) {
     }
-    db.closeConnectionToDB();
-
-    }catch(SQLException | ClassNotFoundException e){}
   }
 
 }

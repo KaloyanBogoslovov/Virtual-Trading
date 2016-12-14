@@ -1,4 +1,4 @@
-package accounts;
+package registration;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import data.updating.LoggedUser;
-import database.DBConnection;
+import database.Database;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -28,15 +28,13 @@ import javafx.stage.Stage;
 
 public class LogIn {
 
-  Stage window;
-
-  private TextField nameTF;
-  private PasswordField passTF;
-  private DBConnection db = new DBConnection();
-  private Label error;
   public static HashMap<String, Symbols> mapData;
   public static Set<String> symbols;
   public static Set<String> keys;
+  private TextField nameTF;
+  private PasswordField passTF;
+  private Label error;
+  private Stage window;
 
   public LogIn() {
     window = new Stage();
@@ -117,9 +115,9 @@ public class LogIn {
   }
 
   private void logging() throws ClassNotFoundException, SQLException {
-    db.connectingToDB();
+    Database.connectingToDB();
     String input = nameTF.getText() + " " + passTF.getText();
-    ResultSet result = db.SelectDB("Select username,password,stockexchange from USERS");
+    ResultSet result = Database.SelectDB("Select username,password,stockexchange from USERS");
     while (result.next()) {
       if (input.equals(result.getString(1) + " " + result.getString(2))) {
         LoggedUser.setLoggedUser(nameTF.getText());
@@ -131,7 +129,7 @@ public class LogIn {
       error.setText("Your username or password is incorrect!");
       error.setTextFill(Color.rgb(210, 39, 30));
     }
-    db.closeConnectionToDB();
+    Database.closeConnectionToDB();
   }
 
   private String getExchange(String exchangeFromDB) {

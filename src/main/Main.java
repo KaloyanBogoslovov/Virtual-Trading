@@ -1,13 +1,12 @@
 package main;
 
 import about.About;
-import accounts.LogIn;
 import charts.MainChart;
 import charts.NewChart;
 import data.updating.DataUpdating;
 import data.updating.LoggedUser;
 import data.updating.UpdateTables;
-import database.DBConnection;
+import database.Database;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
@@ -33,6 +32,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import logfile.LogFile;
 import newtradingposition.NewPosition;
+import registration.LogIn;
 import tabs.Tabs;
 import tabs.TabsFactory;
 
@@ -60,7 +60,7 @@ public class Main extends Application {
     Tabs tradeTable = TabsFactory.createElement(1);
     Tabs historyTable = TabsFactory.createElement(2);
     symbolTable = TabsFactory.createElement(3);
-    new MainChart();
+    new MainChart(centerBorderPane);
 
     MenuItem logOutMI = new MenuItem("Logout...");
     MenuItem exitMI = new MenuItem("Exit");
@@ -189,7 +189,7 @@ public class Main extends Application {
     window.setScene(mainScene);
     window.show();
 
-    DBConnection.createDB();
+    Database.createDB();
     new DataUpdating().dataUpdate();
     LogFile.initPathLocationAndCreateFile();
     new LogIn();
@@ -215,7 +215,7 @@ public class Main extends Application {
     }
   }
 
-  /*
+  /**
    * check for company names that contain the inputed chars in the combobox and display them as
    * hints
    */

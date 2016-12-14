@@ -2,14 +2,14 @@ package database;
 
 import java.sql.*;
 
-public class DBConnection {
+public class Database {
 
   private static final String DBURL = "jdbc:h2:~/test";
   private static final String DBUSER = "Kaloyan_Bogoslovov";
   private static final String DBPASS = "qwerty";
-  private Connection connection;
+  private static Connection connection;
 
-  public void connectingToDB() throws ClassNotFoundException, SQLException {
+  public static void connectingToDB() throws ClassNotFoundException, SQLException {
     Class.forName("org.h2.Driver");
     connection = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
   }
@@ -27,18 +27,18 @@ public class DBConnection {
     con.close();
   }
 
-  public ResultSet SelectDB(String data) throws SQLException {
+  public static ResultSet SelectDB(String data) throws SQLException {
     Statement st = connection.createStatement();
     ResultSet rs = st.executeQuery(data);
     return rs;
   }
 
-  public void insertDB(String data) throws SQLException {
+  public static void insertDB(String data) throws SQLException {
     Statement st = connection.createStatement();
     st.executeUpdate(data);
   }
 
-  public void closeConnectionToDB() throws SQLException {
+  public static void closeConnectionToDB() throws SQLException {
     connection.close();
   }
 

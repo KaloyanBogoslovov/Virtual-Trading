@@ -2,8 +2,6 @@ package tabs.left;
 
 import java.io.IOException;
 
-import accounts.LogIn;
-import accounts.Symbols;
 import charts.MainChart;
 import charts.NewChart;
 import data.tables.SymbolsData;
@@ -15,6 +13,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import main.Main;
 import newtradingposition.NewPosition;
+import registration.LogIn;
+import registration.Symbols;
 import tabs.Tabs;
 import yahoo.DetailsData;
 import yahoo.DetailsDataFromYahoo;
@@ -82,7 +82,7 @@ public class SymbolsTab implements Tabs{
     SymbolsData symbol = leftTable.getSelectionModel().getSelectedItem();
     try {
       NewChart.lastCompanyChart = symbol.getSymbol();
-      Main.centerBorderPane.setCenter(new MainChart("empty").drawMainChart(symbol.getSymbol()));
+      Main.centerBorderPane.setCenter(new MainChart().drawMainChart(symbol.getSymbol()));
     } catch (Exception e1) {
       System.out.println("Unlucky Exception");
     }
@@ -95,7 +95,7 @@ public class SymbolsTab implements Tabs{
     rowSelected.forEach(allRows::remove);
   }
 
-  @Override
+  @SuppressWarnings("unchecked")
   public TableView getTable() {
     return leftTable;
   }
@@ -117,7 +117,7 @@ public class SymbolsTab implements Tabs{
       DetailsTab details = new DetailsTab(info);
       Main.detailsTab.setContent(details.getDetails());
       Main.leftTabPane.getSelectionModel().select(Main.detailsTab);
-      Main.centerBorderPane.setCenter(new MainChart("empty").drawMainChart(company));
+      Main.centerBorderPane.setCenter(new MainChart().drawMainChart(company));
 
     } catch (IOException e1) {
       e1.printStackTrace();

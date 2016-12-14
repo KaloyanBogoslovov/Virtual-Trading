@@ -18,17 +18,15 @@ import main.Main;
 
 
 public class NewChart extends Chart {
-  ComboBox<String> periodCB, intervalCB;
-  public Stage window = new Stage();
-  TextField periodTF = new TextField();
-  BorderPane borderPane;
-  public TextField companyTF = new TextField();
-  public Button adjustButton = new Button("New Chart");
   public static String lastCompanyChart = "";
+  private ComboBox<String> periodCB, intervalCB;
+  private TextField periodTF;
+  public Stage window;
 
 
   public NewChart() {
     super();// calls the constructor of the extended class
+    window = new Stage();
     window.setTitle("New Chart");
     window.initModality(Modality.APPLICATION_MODAL);
     GridPane grid = new GridPane();
@@ -39,7 +37,7 @@ public class NewChart extends Chart {
     Label companyLabel = new Label("Company:");
     GridPane.setConstraints(companyLabel, 0, 0);
 
-
+    TextField companyTF = new TextField();
     companyTF.setPromptText("company");
     GridPane.setConstraints(companyTF, 1, 0);
 
@@ -50,7 +48,7 @@ public class NewChart extends Chart {
     periodCB = new ComboBox<String>();
     periodCB.getItems().addAll("Days", "Weeks", "Months", "Years");
     periodCB.setPromptText("Select a period:");
-
+    periodTF = new TextField();
     periodTF.setPromptText("period");
     periodTF.setPrefWidth(60);
     hbox.getChildren().addAll(periodTF, periodCB);
@@ -64,10 +62,11 @@ public class NewChart extends Chart {
     GridPane.setConstraints(intervalCB, 1, 2);
     intervalCB.setPrefWidth(194);
 
+    Button adjustButton = new Button("New Chart");
     adjustButton.setPrefWidth(250);
     grid.getChildren().addAll(companyLabel, companyTF, periodLabel, hbox, intervalLabel,
         intervalCB);
-    borderPane = new BorderPane();
+    BorderPane borderPane = new BorderPane();
     borderPane.setTop(grid);
     borderPane.setCenter(adjustButton);
     Scene scene = new Scene(borderPane, 290, 180);
@@ -79,7 +78,7 @@ public class NewChart extends Chart {
     adjustButton.setOnAction(e1 -> {
       MainChart.centerHbox.setVisible(true);
       try {
-        drawNewChart();
+        drawNewChart(companyTF.getText());
       } catch (IOException e2) {
         e2.printStackTrace();
       }
@@ -88,8 +87,8 @@ public class NewChart extends Chart {
     });
   }
 
-  public void drawNewChart() throws IOException {
-    lastCompanyChart = companyTF.getText();
+  public void drawNewChart(String company) throws IOException {
+    lastCompanyChart = company;
     String period = periodCB.getValue();
     String interval = intervalCB.getValue();
     makeChart(lastCompanyChart, periodTF.getText(), period, interval);

@@ -8,8 +8,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import main.Main;
+
 
 
 public class MainChart extends Chart {
@@ -17,8 +18,10 @@ public class MainChart extends Chart {
   private static ComboBox<String> periodCB, intervalCB;
   public static HBox centerHbox = new HBox(10);
 
-  public MainChart() {
+  public MainChart(){
+  }
 
+  public MainChart(BorderPane centerBorderPane) {
     Label periodLabel = new Label("Period:");
     periodTF = new TextField();
     periodTF.setPrefWidth(50);
@@ -40,18 +43,13 @@ public class MainChart extends Chart {
     centerHbox.setPadding(new Insets(0, 0, 10, 0));
     centerHbox.setVisible(false);
 
-
     adjustChartButton.setOnAction(e -> {
       try {
-        Main.centerBorderPane.setCenter(drawMainChart(NewChart.lastCompanyChart));
+        centerBorderPane.setCenter(drawMainChart(NewChart.lastCompanyChart));
       } catch (Exception e1) {
         System.out.println("adjustChartButton throws unlucky exception" + e1.getStackTrace());
       }
     });
-  }
-
-  public MainChart(String empty){
-
   }
 
   public LineChart<String, Number> drawMainChart(String company) throws IOException {
@@ -61,6 +59,5 @@ public class MainChart extends Chart {
     centerHbox.setVisible(true);
     return lineChart;
   }
-
 
 }

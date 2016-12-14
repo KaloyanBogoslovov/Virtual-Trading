@@ -10,7 +10,7 @@ import java.util.Set;
 
 import data.updating.LoggedUser;
 import data.updating.UpdateTables;
-import database.DBConnection;
+import database.Database;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -30,7 +30,6 @@ public class NewPosition {
 
   Stage window;
   public TextField symbolTF, volumeTF;
-  private DBConnection db = new DBConnection();
   private Label error;
   private Set<String> companySymbols = null;
   private String company;
@@ -48,11 +47,9 @@ public class NewPosition {
     grid.setVgap(8);
     grid.setHgap(10);
 
-    // symbol label
     Label symbolLabel = new Label("Symbol:");
     GridPane.setConstraints(symbolLabel, 0, 0);
 
-    // symbol textfield
     symbolTF = new TextField();
     symbolTF.setPrefWidth(150);
     GridPane.setConstraints(symbolTF, 1, 0);
@@ -91,7 +88,6 @@ public class NewPosition {
         e1.printStackTrace();
       }
     });
-
 
     grid.getChildren().addAll(symbolLabel, symbolTF, volumeLabel, volumeTF, buttonHBox, error);
 
@@ -164,7 +160,7 @@ public class NewPosition {
       System.out.println("No data!");
       error.setText("No data!");
       error.setTextFill(Color.rgb(210, 39, 30));
-      db.closeConnectionToDB();
+      Database.closeConnectionToDB();
     }
     return run;
   }
@@ -172,8 +168,8 @@ public class NewPosition {
   private ResultSet userInformationFromDB() {
     ResultSet rt = null;
     try {
-      db.connectingToDB();
-      rt = db.SelectDB(
+      Database.connectingToDB();
+      rt = Database.SelectDB(
           "Select balance,leverage,margin,totalprofit,ordernumber,freemargin from users where username ="
               + "'" + LoggedUser.getLoggedUser() + "'");
       rt.absolute(1);
@@ -202,11 +198,11 @@ public class NewPosition {
       orderNumber++;
       String state = "active";
       // saving to db
-      db.insertDB(
+      Database.insertDB(
           "UPDATE users set margin =" + accMargin + ", freemargin=" + freeMargin + ", ordernumber="
               + orderNumber + "where username=" + "'" + LoggedUser.getLoggedUser() + "'");
       stock.getName();
-      db.insertDB("insert into trades values(" + "'" + LoggedUser.getLoggedUser() + "'" + ", " + "'"
+      Database.insertDB("insert into trades values(" + "'" + LoggedUser.getLoggedUser() + "'" + ", " + "'"
           + stock.getSymbol() + "'" + "," + +orderNumber + "," + "'" + getDate() + "'" + "," + "'"
           + type + "'" + "," + volume + "," + purchaseStockPrice + "," + closeStockPrice + "," + 0
           + "," + "'" + state + "'" + ", " + 0 + ", " + "'" + stock.getName() + "'" + "," + "'"
@@ -215,14 +211,14 @@ public class NewPosition {
           "Opened long position in:" + stock.getName() + " at price:" + purchaseStockPrice);
 
       repaintTables();
-      db.closeConnectionToDB();
+      Database.closeConnectionToDB();
       window.close();
 
     } else {
       System.out.println("not enough margin!");
       error.setText("Not enough margin!");
       error.setTextFill(Color.rgb(210, 39, 30));
-      db.closeConnectionToDB();
+      Database.closeConnectionToDB();
     }
   }
 

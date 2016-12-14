@@ -13,7 +13,7 @@ import charts.NewChart;
 import data.tables.TradeData;
 import data.updating.LoggedUser;
 import data.updating.UpdateTables;
-import database.DBConnection;
+import database.Database;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -32,11 +32,10 @@ import yahoo.EssentialDataFromYahoo;
 import yahoo.YahooFinance;
 
 
-public class TradeTab implements Tabs{
-  private  TableView<TradeData> tradeTable;
+public class TradeTab implements Tabs {
+  private TableView<TradeData> tradeTable;
   TableColumn<TradeData, String> symbolColumn, orderColumn, timeColumn, typeColumn, volumeColumn,
       priceColumn, currentPriceColumn, profitColumn, companyColumn;
-  private DBConnection db = new DBConnection();
   BigDecimal profit = new BigDecimal(0);
   BigDecimal lastPrice = new BigDecimal(0);
   BigDecimal purchasePrice = new BigDecimal(0);
@@ -129,9 +128,9 @@ public class TradeTab implements Tabs{
   }
 
   private void getDataFromDB(TradeData closeTrade) throws ClassNotFoundException, SQLException {
-    db.connectingToDB();
+    Database.connectingToDB();
     ResultSet userTrade =
-        db.SelectDB("select volume,purchaseprice,symbol from trades where username='"
+        Database.SelectDB("select volume,purchaseprice,symbol from trades where username='"
             + LoggedUser.getLoggedUser() + "'" + "and ordernumber=" + closeTrade.getOrderNumber()
             + "and tradetime='" + closeTrade.getOrderTime() + "'");
     userTrade.first();
@@ -140,7 +139,7 @@ public class TradeTab implements Tabs{
   }
 
   private void saveDataToDB(TradeData closeTrade) throws SQLException {
-    ResultSet userResult = db.SelectDB("select balance,leverage,margin from users where username='"
+    ResultSet userResult = Database.SelectDB("select balance,leverage,margin from users where username='"
         + LoggedUser.getLoggedUser() + "'");
     userResult.first();
     BigDecimal leverage = userResult.getBigDecimal(2);
@@ -152,17 +151,17 @@ public class TradeTab implements Tabs{
         (userResult.getBigDecimal(3).subtract(stockMargin)).setScale(2, BigDecimal.ROUND_HALF_EVEN);
     BigDecimal freeMargin = (balance.subtract(accMargin)).setScale(2, BigDecimal.ROUND_HALF_EVEN);
     String tradestate = "closed";
-    db.insertDB("update trades set profit=" + profit + ", tradestate='" + tradestate
+    Database.insertDB("update trades set profit=" + profit + ", tradestate='" + tradestate
         + "',lastprice=" + lastPrice + ",closetime='" + getDate() + "' where username='"
         + LoggedUser.getLoggedUser() + "'" + "and ordernumber=" + closeTrade.getOrderNumber()
         + "and tradetime='" + closeTrade.getOrderTime() + "'");
-    db.insertDB("update users set balance=" + balance + ", margin=" + accMargin + ", freemargin="
+    Database.insertDB("update users set balance=" + balance + ", margin=" + accMargin + ", freemargin="
         + freeMargin + "where username='" + LoggedUser.getLoggedUser() + "'");
     System.out.println("Closed position in:" + closeTrade.getSymbol() + ", at price:" + lastPrice
         + ", at profit:" + profit);
     repaintTables();
 
-    db.closeConnectionToDB();
+    Database.closeConnectionToDB();
   }
 
   private void showAlertMessage() {
@@ -203,7 +202,7 @@ public class TradeTab implements Tabs{
     TradeData symbol = tradeTable.getSelectionModel().getSelectedItem();
     try {
       NewChart.lastCompanyChart = symbol.getSymbol();
-      Main.centerBorderPane.setCenter(new MainChart("empty").drawMainChart(symbol.getSymbol()));
+      Main.centerBorderPane.setCenter(new MainChart().drawMainChart(symbol.getSymbol()));
     } catch (Exception e1) {
       System.out.println("Unlucky Exceptionrrrr");
     }
@@ -217,37 +216,36 @@ public class TradeTab implements Tabs{
 
   @Override
   public void initTableContent() {
-    try{
-    DBConnection db = new DBConnection();
-    db.connectingToDB();
-    ResultSet result = db.SelectDB(
-        "select company, symbol,ordernumber,tradetime,tradetype,volume,purchaseprice,currentprice,profit  from trades where username="
-            + "'" + LoggedUser.getLoggedUser() + "'" + "and tradestate='active' ");
+    try {
+      Database.connectingToDB();
+      ResultSet result = Database.SelectDB(
+          "select company, symbol,ordernumber,tradetime,tradetype,volume,purchaseprice,currentprice,profit  from trades where username="
+              + "'" + LoggedUser.getLoggedUser() + "'" + "and tradestate='active' ");
 
-    ObservableList<TradeData> allRows;
-    allRows =tradeTable.getItems();
-    allRows.clear();
+      ObservableList<TradeData> allRows;
+      allRows = tradeTable.getItems();
+      allRows.clear();
 
-    while (result.next()) {
-      TradeData tradeData = new TradeData();
-      tradeData.setCompany(result.getString(1));
-      tradeData.setSymbol(result.getString(2));
-      tradeData.setOrderNumber(result.getInt(3));
-      tradeData.setOrderTime(result.getString(4));
-      tradeData.setOrderType(result.getString(5));
-      tradeData.setVolume(result.getInt(6));
-      tradeData.setPurchasePrice(result.getBigDecimal(7));
-      // if(result.getString(8).equals("0.00")){
-      // tradeData.setCurrentPrice("No data");
-      // tradeData.setProfit("N/A");
-      // }else{
-      tradeData.setCurrentPrice(result.getBigDecimal(8));
-      tradeData.setProfit(result.getBigDecimal(9));
-      // }
-      tradeTable.getItems().add(tradeData);
-    }
-    db.closeConnectionToDB();
-    }catch(SQLException | ClassNotFoundException e){
+      while (result.next()) {
+        TradeData tradeData = new TradeData();
+        tradeData.setCompany(result.getString(1));
+        tradeData.setSymbol(result.getString(2));
+        tradeData.setOrderNumber(result.getInt(3));
+        tradeData.setOrderTime(result.getString(4));
+        tradeData.setOrderType(result.getString(5));
+        tradeData.setVolume(result.getInt(6));
+        tradeData.setPurchasePrice(result.getBigDecimal(7));
+        // if(result.getString(8).equals("0.00")){
+        // tradeData.setCurrentPrice("No data");
+        // tradeData.setProfit("N/A");
+        // }else{
+        tradeData.setCurrentPrice(result.getBigDecimal(8));
+        tradeData.setProfit(result.getBigDecimal(9));
+        // }
+        tradeTable.getItems().add(tradeData);
+      }
+      Database.closeConnectionToDB();
+    } catch (SQLException | ClassNotFoundException e) {
     }
   }
 }

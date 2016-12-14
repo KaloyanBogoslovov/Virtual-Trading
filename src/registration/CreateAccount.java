@@ -1,9 +1,9 @@
-package accounts;
+package registration;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import database.DBConnection;
+import database.Database;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -25,8 +25,8 @@ public class CreateAccount {
   private TextField firstNameTF, lastNameTF, userNameTF, balanceTF;
   private PasswordField passTF;
   private ComboBox<String> leverageCB, exchangeCB;
-  private DBConnection db = new DBConnection();
-  int i;
+
+  private int checks;
 
   public CreateAccount() {
     window = new Stage();
@@ -95,6 +95,7 @@ public class CreateAccount {
     cancelButton.setOnAction(e -> {
       window.close();
     });
+
     Button signButton = new Button("Create Account");
     signButton.setOnAction(e -> {
       try {
@@ -104,6 +105,7 @@ public class CreateAccount {
       }
 
     });
+
     HBox hbox = new HBox(10);
     hbox.getChildren().addAll(cancelButton, signButton);
     GridPane.setConstraints(hbox, 1, 7);
@@ -126,29 +128,27 @@ public class CreateAccount {
   private void addNewAccToDB() throws SQLException, ClassNotFoundException {
     boolean run = checkData();
     if (run) {
-      db.connectingToDB();
-
+      Database.connectingToDB();
       String data = "INSERT INTO USERS " + "VALUES(" + "'" + userNameTF.getText() + "'" + ", " + "'"
           + firstNameTF.getText() + "'" + ", " + "'" + lastNameTF.getText() + "'" + ", " + "'"
           + passTF.getText() + "'" + ", " + Long.parseLong(balanceTF.getText()) + ", " + leverage()
           + ", " + 0 + ", " + 0 + ", " + Long.parseLong(balanceTF.getText()) + ", "
           + Long.parseLong(balanceTF.getText()) + ", " + 0 + "," + "'" + stockExchange() + "'"
           + ")";
-
-      db.insertDB(data);
-      db.closeConnectionToDB();
+      Database.insertDB(data);
+      Database.closeConnectionToDB();
       window.close();
     }
   }
 
   private boolean checkData() throws ClassNotFoundException, SQLException {
-    i = 10;
+    checks = 10;
     checkForEmptyFields();
     checkIfUsernameIsFree();
     checkFirstName();
     checkLastName();
     checkBalance();
-    if (i == 15)
+    if (checks == 15)
       return true;
     else {
       return false;
@@ -159,58 +159,58 @@ public class CreateAccount {
     if (!firstNameTF.getText().equals("") && !lastNameTF.getText().equals("")
         && !balanceTF.getText().equals("") && !userNameTF.getText().equals("")
         && !passTF.getText().equals("")) {
-      i += 2;
+      checks += 2;
       emptyField.setText("");
     } else {
       emptyField.setText("Please fill all of the fields");
       emptyField.setTextFill(Color.rgb(210, 39, 30));
-      i -= 2;
+      checks -= 2;
     }
   }
 
   private void checkIfUsernameIsFree() throws ClassNotFoundException, SQLException {
-    db.connectingToDB();
-    ResultSet usernames = db.SelectDB("select username from users");
+    Database.connectingToDB();
+    ResultSet usernames = Database.SelectDB("select username from users");
     while (usernames.next()) {
       if (userNameTF.getText().equalsIgnoreCase(usernames.getString(1))) {
-        i--;
+        checks--;
         userNameTF.setStyle("-fx-text-inner-color: red;");
 
       }
     }
-    if (i == 8 || i == 12) {
+    if (checks == 8 || checks == 12) {
       userNameTF.setStyle("-fx-text-inner-color: black;");
     }
-    db.closeConnectionToDB();
+    Database.closeConnectionToDB();
   }
 
   private void checkFirstName() {
     if (firstNameTF.getText().matches("[a-zA-Z]+")) {
-      i++;
+      checks++;
       firstNameTF.setStyle("-fx-text-inner-color: black;");
     } else {
       firstNameTF.setStyle("-fx-text-inner-color: red;");
-      i--;
+      checks--;
     }
   }
 
   private void checkLastName() {
     if (lastNameTF.getText().matches("[a-zA-Z]+")) {
-      i++;
+      checks++;
       lastNameTF.setStyle("-fx-text-inner-color: black;");
     } else {
       lastNameTF.setStyle("-fx-text-inner-color: red;");
-      i--;
+      checks--;
     }
   }
 
   private void checkBalance() {
     if (balanceTF.getText().matches("\\d+")) {
-      i++;
+      checks++;
       balanceTF.setStyle("-fx-text-inner-color: black;");
     } else {
       balanceTF.setStyle("-fx-text-inner-color: red;");
-      i--;
+      checks--;
     }
   }
 

@@ -4,16 +4,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import data.tables.HistoryData;
-import data.tables.TradeData;
 import data.updating.LoggedUser;
-import database.DBConnection;
+import database.Database;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import tabs.Tabs;
 
-public class HistoryTab implements Tabs{
+public class HistoryTab implements Tabs {
   private TableView<HistoryData> historyTable;
   TableColumn<HistoryData, String> hCompanyColumn, hSymbolColumn, hOrderColumn, hPurchaseTimeColumn,
       hCloseTimeColumn, hTypeColumn, hVolumeColumn, hPurchasePriceColumn, hClosePriceColumn,
@@ -52,7 +51,7 @@ public class HistoryTab implements Tabs{
 
   }
 
-  public void setColumnsSizes() {
+  private void setColumnsSizes() {
     hCompanyColumn.prefWidthProperty().bind(historyTable.widthProperty().multiply(0.1));
     hSymbolColumn.prefWidthProperty().bind(historyTable.widthProperty().multiply(0.1));
     hOrderColumn.prefWidthProperty().bind(historyTable.widthProperty().multiply(0.1));
@@ -73,10 +72,9 @@ public class HistoryTab implements Tabs{
 
   @Override
   public void initTableContent() {
-    try{
-      DBConnection db = new DBConnection();
-      db.connectingToDB();
-      ResultSet result = db.SelectDB(
+    try {
+      Database.connectingToDB();
+      ResultSet result = Database.SelectDB(
           "select company, symbol,ordernumber,tradetime,closetime,tradetype,volume,purchaseprice,lastprice,profit  from trades where username="
               + "'" + LoggedUser.getLoggedUser() + "'" + "and tradestate='closed' ");
       ObservableList<HistoryData> allRows;
@@ -97,8 +95,8 @@ public class HistoryTab implements Tabs{
         historyData.setProfit(result.getBigDecimal(10));
         historyTable.getItems().add(historyData);
       }
-      db.closeConnectionToDB();
-    }catch(SQLException | ClassNotFoundException e){
+      Database.closeConnectionToDB();
+    } catch (SQLException | ClassNotFoundException e) {
     }
 
   }

@@ -37,8 +37,6 @@ public class Chart {
     lineChart.setLegendVisible(false);
   }
 
-
-
   protected List<ChartData> getChartData(String comp, String period, String periodCB,
       String interval) {
     int time = 1;
@@ -84,7 +82,6 @@ public class Chart {
           new HoverNode(empty, stocks.get(i).getClose().setScale(2, BigDecimal.ROUND_HALF_EVEN)));
     return data;
   }
-
 
   public int period(String period) {
     int a = Calendar.YEAR;// default value = year;
