@@ -18,5 +18,5 @@ A program that allows to virtually trade stocks from NYSE, NASDAQ and XETRA(Fran
 
 1) When the program is started for the first time it creates a database and a logfile in the users folder(all the data is stored locally).
 
-2) You have to create account and then you are free to trade. :)
+2) You have to create an account and then you are free to trade. :)
 
