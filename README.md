@@ -9,6 +9,7 @@ Main architecture of the program
 ![architecture](https://cloud.githubusercontent.com/assets/22866739/22239044/282e7b8c-e21d-11e6-884a-af39abf5dbe3.PNG)
 
 Data updating
+
 ![architecture2](https://cloud.githubusercontent.com/assets/22866739/22239045/285128da-e21d-11e6-9d1a-76b14ff3b8ce.PNG)
 
 ## Requirements
