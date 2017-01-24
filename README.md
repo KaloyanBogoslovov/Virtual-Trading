@@ -26,5 +26,10 @@ Data updating
 
 1) When the program is started for the first time it creates a database and a logfile in the users folder(all the data is stored locally).
 
-2) You have to create an account and then you are free to trade. :)
+2) You have to create an account and specify your leverage level and Stock Exchange.
 
+3) To open a position you can either: right click on a company in the "Company symbols" section and then click "New Order"(every company you have searched for, will be in that section) or click on "New Order...".
+ 
+4) To close a position, right click on a open position from the "Trades" table and then click "Close Trade".
+
+5) I hope you enjoy the program.
